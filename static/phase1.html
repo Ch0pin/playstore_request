@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <title>Phase 1</title>
+    </head>
+    <body>
+    <h2 id="currentprogress"></h2>
+
+        <script type="text/javascript">
+            getPhase1();
+            setInterval(getPhase1, 1000);
+
+                function getPhase1()
+                {
+                    
+                    $.ajax({
+
+                        type: "GET",
+                        url: 'http://localhost:8081/results',
+                        async: true,
+                        success: function(resp) {
+
+                            document.getElementById("currentprogress").innerHTML = "Gathering Package Names ("+resp+"%)"
+                            if(resp.includes("Query Results")){
+                         
+                                window.location.href="http://localhost:8081/results"
+
+                            }
+                                
+                        
+                        }
+
+                    });
+                }
+
+        </script>
+    </body>
+    </html>

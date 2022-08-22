@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<body>
+<style>
+img {
+  width: 50%;
+  height: auto;
+}
+
+label{
+
+      display:inline-block;
+      width:200px;
+      margin-right:30px;
+      text-align:right;
+}
+
+input[type=button], input[type=submit], input[type=reset] {
+      background-color: #04AA6D;
+      border: none;
+      color: white;
+      padding: 16px 32px;
+      text-decoration: none;
+      margin: 4px 2px;
+      cursor: pointer;
+}
+
+
+input{
+		background-color: #f2f2f2;
+		display:inline-block;
+		width:200px;
+		style:italic;
+		margin-right:30px;	
+        text-align:right;
+}
+
+}
+
+fieldset{
+
+      border:none;
+      width:100px;
+      margin:0px auto;
+}
+
+
+</style>
+
+<h2>Google Play Search</h2>
+<fieldset>
+<table>
+<form action="http://localhost:8081/query" method=post>
+
+	<label for="query">Query Keyword:</label>
+	<input type="text" id="query" name="query" value=""><br><br>
+
+	<label for="maxresults">Max number of results:</label>
+	<input type="text" id="maxresults" name="maxresults" value=""><br><br>
+
+    <label for="saveresults">Filename to save the results:</label>
+	<input type="text" id="saveresults" name="saveresults" value=""><br><br>
+
+	<label for="TELEGRAM_BOT_TOKEN">TELEGRAM_BOT_TOKEN:</label>
+	<input type="text" id="TELEGRAM_BOT_TOKEN" name="TELEGRAM_BOT_TOKEN" value=""><br><br>
+	<label for="chatid">Chat ID:</label>
+	<input type="text" id="chatid" name="chatid" value="">
+	<br><br>
+    
+
+
+	<h3>
+        <label style="margin-left:110px;width:250px">Query</label>
+        <label style="text-align:right; width:120px">Weight</label>
+        <br>
+                
+    </h3>
+     
+
+
+	<label for="comments">Comment:</label>
+	<input type="text" id="comments" name="comments" value="">
+	<input type="text" id="commentsWeight" name="commentsWeight" style="width:30px" value="0">
+	<br><br>
+
+
+  <label for="description">Description:</label>
+  <input type="text" id="description" name="description" value="">
+  <input type="text" id="descriptionWeight" name="descriptionWeight" style="width:30px"  value="0"><br><br>
+  
+  
+  <label for="title">Title:</label>
+  <input type="text" id="title" name="title" value="">
+  <input type="text" id="titleWeight" name="titleWeight" style="width:30px" value="0"><br><br>
+  
+  
+  <label for="developerEmail">Developer Email:</label>
+  <input type="text" id="developerEmail" name="developerEmail" value="">
+  <input type="text" id="developerEmailWeight" name="developerEmailWeight" style="width:30px" value="0"><br><br>
+  
+    
+  <label for="minInstalls">Min Installs:</label>
+  <input type="text" id="minInstalls" name="minInstalls" value="">
+  <input type="text" id="minInstallsWeight" name="minInstallsWeight" style="width:30px" value="0"><br><br>
+  
+  
+  <label for="score">Application Score:</label>
+  <input type="text" id="score" name="score" value="">
+  <input type="text" id="scoreWeight" name="scoreWeight" style="width:30px" value="0"><br><br>
+  
+  <label for="ratings">Number of ratings:</label>
+  <input type="text" id="ratings" name="ratings" value="">
+  <input type="text" id="ratingsWeight" name="ratingsWeight" style="width:30px" value="0"><br><br>
+ 
+  <label for="number_of_reviews">Number of reviews:</label>
+  <input type="text" id="number_of_reviews" name="number_of_reviews" value="">
+  <input type="text" id="number_of_reviewsWeight" name="number_of_reviewsWeight" style="width:30px" value="0"><br> <br>
+  
+  <label for="privacyPolicy">Privacy policy (URL):</label>
+  <input type="text" id="privacyPolicy" name="privacyPolicy" value="">
+  <input type="text" id="privacyPolicyWeight" name="privacyPolicyWeight" style="width:30px" value="0"><br> <br>  
+  
+  <label for="developerWebsite">Developer Website (URL):</label>
+  <input type="text" id="developerWebsite" name="developerWebsite" value="">
+  <input type="text" id="developerWebsiteWeight" name="developerWebsiteWeight" style="width:30px" value="0"><br>  <br> 
+  
+  
+  <label for="developerAddress">Developer Address:</label>
+  <input type="text" id="developerAddress" name="developerAddress" value="">
+  <input type="text" id="developerAddressWeight" name="developerAddressWeight" style="width:30px" value="0"><br>   
+  
+    
+  <label for="permissions">Permisions (seperate with comma):</label>
+  <input type="text" id="permissions" name="permissions" value="">
+  <input type="text" id="permissionsWeight" name="permissionsWeight" style="width:30px" value="0"><br><br><br> 
+  
+  
+
+  <label for="threshold">Alert Threshold:</label>
+  <input type="text" id="threshold" name="threshold" value="0"><br><br>
+
+  <div>
+    <input style="margin-left:230px;" type="submit" value="Submit">
+
+  </div>
+</form>
+</table>
+</fieldset>
+<h1>How to use</h1>
+<div>
+      <div style="float: right">
+      <img src="img/readme.png" alt="instructions">
+      </div>
+      <div>
+
+
+      <ul>
+            <h3>Search fields:</h3>
+            <li>(1 - <b>Required</b>) Enter the keyword(s) that you want to get results for</li>
+            <li>(2 - <b>Required</b>) The number of results (PlayStore returns up to 30, you can get an unlimited number, but it takes a lot of time)</li>
+            <li>(3 - optional) Enter a filename to save the results to</li>
+            <li>(4 - optional) Receive the results to your telegram. See <a href="https://sendpulse.com/knowledge-base/chatbot/create-telegram-chatbot" target="_blank">
+                  here</a> how to get the BOT TOKEN and Chat Id </li>
+            <li>(5) <b>Filters</b>
+            <dd>- The results (from 2) are going to be filtered according to the criteria you define in those fields.</dd>
+            <dd>- The query is NOT case sensitive and it will return TRUE if the PlayStore returned data CONTAINS the keyword</dd>
+            <dd>- The "alert threshold" defines the summary of weights in order to trigger an alert</dd>
+      </li>
+          </ul>
+      
+      </div>
+      </div>
+
+
+
+</body>
+</html>
+
+

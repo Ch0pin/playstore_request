@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <!-- details here -->
+    <!-- https://www.jqueryscript.net/table/pagination-sort-filter-manager.html -->
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+	 <!-- local copies -->
+	<link rel="stylesheet" href="/css/style.css">
+	<script type="text/javascript" src="/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="/js/colResizable-1.6.js"></script>
+    <script src="https://brainbell.com/javascript/download/resizable.js"></script> 
+	
+
+    <style type="text/css">
+
+
+		div.resizable_disabled{
+
+			resize: both;
+			overflow: auto;
+			max-height: fit-content;
+			max-width: fit-content;
+			}
+
+		body {
+			font-family: "Roboto Condensed", Helvetica, sans-serif;
+			background-color: #f4f5ee;
+		}
+		.container { margin: 150px auto; max-width: 960px; }
+
+		table {
+
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 20px;
+			margin-bottom: 20px;
+            border: 1px solid #ddd;
+		}
+		table,  td {
+		
+			border: 1px solid #bbb;
+			text-align: left;
+		}
+
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+
+		td {
+
+			padding: 5px;
+		}
+
+		th{
+			
+			position: sticky;
+			top: 0; 
+			background-image:url('../img/th.png');
+			height:10px;
+			background-repeat:no-repeat;
+			color:white;
+			text-shadow: #012b4d 2px 2px 2px;
+			text-align: center;   
+			}
+
+		button {
+			cursor: pointer;
+		}
+
+		#for_numrows {
+			padding: 10px;
+			float: left;
+		}
+		#for_filter_by {
+			padding: 10px;
+			float: right;
+		}
+		#pagesControllers {
+			display: block;
+			text-align: center;
+		}
+
+
+		
+
+
+	</style>
+</head>
+
+<body>
+	<h1> Query Results</h1>
+	<h3 id="currentprogress"></h3>
+	
+<br>
+	<table id = "results" class="DataTable" style="width:100%">
+		<thead>
+			<tr>
+
+                <th><div class="resizable">appId</div></th>
+                <th><div class="resizable">url</div></th>
+                <th><div class="resizable">title</div></th>
+                <th><div class="resizable">description</div></th>
+                <th><div class="resizable">minInstalls</div></th>
+                <th><div class="resizable">realInstalls</div></th>
+                <th><div class="resizable">reviews</div></th>
+                <th><div class="resizable">score</div></th>
+                <th><div class="resizable">ratings</div></th>
+                <th><div class="resizable">developer</div></th>
+                <th><div class="resizable">developerId</div></th>
+                <th><div class="resizable">developerEmail</div></th>
+                <th><div class="resizable">developerWebsite</div></th>
+                <th><div class="resizable">privacyPolicy</div></th>
+                <th><div class="resizable">developerAddress</div></th>
+                <th><div class="resizable">icon</div></th>
+                <th><div class="resizable">headerImage</div></th>
+                <th><div class="resizable">released</div></th>
+                <th><div class="resizable">updated</div></th>
+                <th><div class="resizable">version</div></th>
+                <th><div class="resizable">comments</div></th>
+                <th><div class="resizable">permissions</div></th>
+				</div>
+			</tr>
+        </thead>
+		<tbody> 
+	
+
+
+
+<!-- CUT HERE -->
+
+
+	
+		</tbody>
+	</table>
+
+
+	<script type="text/javascript">
+			var refreshId = setInterval(getSummary, 1000);
+
+			function getSummary()
+			{
+				$.ajax({type: "GET", url: 'http://localhost:8081/status',async: true,
+					success: function(resp) { document.getElementById("currentprogress").innerHTML = resp;
+						if(resp.includes("100.0%"))
+							clearInterval(refreshId);
+					}});
+			}
+		
+    		$('#results').DataTable();
+
+			$(function(){
+				$("table").colResizable({resizeMode:'fit'});
+			//$("table").colResizable();
+			});
+ </script>
+	</body>
+</html>
+
+
