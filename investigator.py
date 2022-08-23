@@ -73,13 +73,17 @@ class Investigator:
     chatid = None 
     filename = None
     dbname = ""
+    keywords = ""
+    threshold = 0
 
-    def __init__(self,filter, botid = '', chatid = '', filename='') -> None:
+    def __init__(self,filter, keywords, threshold, botid = '', chatid = '', filename='') -> None:
         self.filter = filter
         self.botid = botid
         self.chatid = chatid
         self.filename = filename
         self.dbname = str(int(time.time()) )+".db"
+        self.keywords = keywords
+        self.threshold = threshold
 
         self.applicationDatabase = application_database(self.dbname)
 
@@ -91,7 +95,8 @@ class Investigator:
 
         with open("results.txt",'w') as fobj:
             fobj.write(self.dbname)
-
+            
+        self.applicationDatabase.insert_session((self.keywords, self.threshold))
 
         for package_name in package_list:
             

@@ -37,6 +37,8 @@ class application_database():
             comments TEXT,
             permissions TEXT)""")
 
+        self.cursor.execute("CREATE TABLE Session(keywords TEXT, maxresults INTEGER)")
+
 
     def insert_application(self,info):
         sql = """INSERT INTO Application( 
@@ -64,11 +66,21 @@ class application_database():
             permissions 
          ) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"""
         self.execute_update(sql,info)
+    
+    def insert_session(self,info):
+        sql = "INSERT INTO session(keywords, maxresults) values(?,?)"
+        self.execute_update(sql,info)
 
     def show_results(self):
         sql = """SELECT * from Application"""
         self.cursor.execute(sql)
         return self.cursor.fetchall()
+
+    def get_session(self):
+        sql = """SELECT * from session"""
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
 
     def execute_update(self,sql,attribs):
         self.cursor.execute(sql,attribs)

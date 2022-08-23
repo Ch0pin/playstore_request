@@ -1,3 +1,4 @@
+import datetime
 from os import walk
 import requests, sys, re, urllib3, os
 from investigator import Investigator, Printer,Filter
@@ -124,6 +125,8 @@ def request_handler():
 @app.route('/results', methods = ['GET'])
 def present_results():
     dbname = request.args.get('query')
+    global keyword
+    global threshold_c
     reply = ""
     #prologue
     with open("./static/results.html",'r') as htmlcode:
@@ -136,9 +139,14 @@ def present_results():
         if dbname == None:
             with open("results.txt",'r') as fobj:
                 dbname = fobj.readline()
+
         if dbname != "":
             applicationDatabase = application_database(dbname)
             res = applicationDatabase.show_results()
+            keyword, threshold_c = applicationDatabase.get_session()[0]
+  
+            
+
 
             for entry in res:
                 i = 0
@@ -186,7 +194,7 @@ def prev_queries():
     result = ""
     for i in filenames:
         if i[-3:] == ".db":
-            result += "<a href='http://localhost:8081/results?query="+i+"'>" + i + "</a><button type='button' onclick='deletePreviousQuery(\""+i+"\")'>&nbsp;&nbsp;&nbsp;&nbsp;del</button>"
+            result += "<a href='http://localhost:8081/results?query="+i+"'>" + datetime.datetime.fromtimestamp(int(i[:-3])).strftime('%Y-%m-%d %H:%M:%S') + "</a><button type='button' onclick='deletePreviousQuery(\""+i+"\")'>&nbsp;&nbsp;&nbsp;&nbsp;del</button>"
     return result
 
 @app.route('/delquery', methods = ['POST'])
@@ -202,7 +210,6 @@ def delete_previous_query():
     except Exception as e:
         print(e)
         return e
-
 
 def start_search(keyword,threshold,filter,botid,chatid,filename):
     
@@ -222,7 +229,7 @@ def start_search(keyword,threshold,filter,botid,chatid,filename):
         print("[!] (Warning) Found {} packages, kept first {} (try to increase the threshold).".format(len(package_names),len(package_names[:threshold])))
     print("[i] PHASE 2: Filtering...")
 
-    investigator = Investigator(filter,botid,chatid,filename)
+    investigator = Investigator(filter,keyword,threshold,botid,chatid,filename)
     investigator.investigate(package_names[:threshold])
 
     sys.exit()
