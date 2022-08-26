@@ -61,6 +61,7 @@ def return_status():
 def simple_request_handler():
     global keyword
     global threshold_c
+    includeComments = False
     try:
         with open("results.txt",'w') as f:
             f.write("")
@@ -69,16 +70,21 @@ def simple_request_handler():
         filter = Filter()
         filter.threshold=1
         keyword = data['query']
+
         if data['maxresults'] == '':
             maxResults = 30
         else:
             maxResults = int(data['maxresults'])
         if keyword == '':
             raise Exception("Keyword is required!")
+
+        if data.get('includecomments')=='on':
+            includeComments = True
+ 
   
         threshold_c = maxResults 
 
-        new_thread = Thread(target=start_search,args=(keyword,maxResults,filter,None,None,None))
+        new_thread = Thread(target=start_search,args=(keyword,maxResults,filter,None,None,None,includeComments))
         new_thread.start()
             
         return redirect("./phase1?keyword="+keyword+"&maxresults="+str(maxResults), code=302)
@@ -90,6 +96,7 @@ def simple_request_handler():
 def request_handler():
     global keyword
     global threshold_c
+    includeComments = False
     try:
         with open("results.txt",'w') as f:
             f.write("")
@@ -103,6 +110,8 @@ def request_handler():
         filter.threshold=int(data['threshold'])
         keyword = data['query']
         filename = data['saveresults']
+        if data.get('includecomments')=='on':
+            includeComments = True
         if keyword == '':
             raise Exception("Keyword is required!")
         elif filter.threshold == 0:
@@ -114,7 +123,7 @@ def request_handler():
                     setattr(filter,entry[:-6],(data[entry[:-6]],int(data[entry])))
                     receivedData  += "\n{} {} {}".format(entry[:-6],data[entry[:-6]],int(data[entry]))+"\n"
             print(receivedData)
-            new_thread = Thread(target=start_search,args=(keyword,maxResults,filter,telegram_bot_token,telegram_chat_id,filename))
+            new_thread = Thread(target=start_search,args=(keyword,maxResults,filter,telegram_bot_token,telegram_chat_id,filename, includeComments))
             new_thread.start()
             
         return redirect("./phase1?query="+keyword+"&maxresults="+str(maxResults), code=302)
@@ -157,13 +166,13 @@ def present_results():
                     reply += """<div style="width: auto; max-width: 200px; height: 50px; overflow: auto; overflow-wrap: break-word;">"""
 
                     if i== 16 or i==17:
-                        reply += "<img src='" + str(col) + "' style='height:80%; width=80%'>"
+                        reply += "<img src='" + str(col) + "' style='height:80%; width=80%' target='_blank'>"
                     elif i==2:
-                        reply += "<a href='" + str(col) + "'>Google Play link</a>"
+                        reply += "<a href='" + str(col) + "' target='_blank'>Google Play link</a>"
                     elif i==11:
-                        reply += "<a href='https://play.google.com/store/apps/dev?id=" + str(col) + "'>"+str(col)+"</a>" 
+                        reply += "<a href='https://play.google.com/store/apps/dev?id=" + str(col) + "' target='_blank'>"+str(col)+"</a>" 
                     elif i==13 or i==14:
-                        reply += "<a href='" + str(col) + "'>"+str(col)+"</a>"
+                        reply += "<a href='" + str(col) + "' target='_blank'>"+str(col)+"</a>"
                     else:
                         reply += str(col)
                     reply += "</div></td>"
@@ -211,7 +220,7 @@ def delete_previous_query():
         print(e)
         return e
 
-def start_search(keyword,threshold,filter,botid,chatid,filename):
+def start_search(keyword,threshold,filter,botid,chatid,filename,includeComments):
     
     print("[i] PHASE 1: Collecting Package Names...")
 
@@ -229,7 +238,7 @@ def start_search(keyword,threshold,filter,botid,chatid,filename):
         print("[!] (Warning) Found {} packages, kept first {} (try to increase the threshold).".format(len(package_names),len(package_names[:threshold])))
     print("[i] PHASE 2: Filtering...")
 
-    investigator = Investigator(filter,keyword,threshold,botid,chatid,filename)
+    investigator = Investigator(filter,keyword,threshold,botid,chatid,filename,includeComments)
     investigator.investigate(package_names[:threshold])
 
     sys.exit()

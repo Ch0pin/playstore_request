@@ -68,6 +68,7 @@ class Filter:
 
 class Investigator:
     applicationDatabase = None
+    includecomments = None
     filter = Filter()
     botid = None
     chatid = None 
@@ -76,7 +77,7 @@ class Investigator:
     keywords = ""
     threshold = 0
 
-    def __init__(self,filter, keywords, threshold, botid = '', chatid = '', filename='') -> None:
+    def __init__(self,filter, keywords, threshold, botid = '', chatid = '', filename='', includecomments=False) -> None:
         self.filter = filter
         self.botid = botid
         self.chatid = chatid
@@ -84,6 +85,7 @@ class Investigator:
         self.dbname = str(int(time.time()) )+".db"
         self.keywords = keywords
         self.threshold = threshold
+        self.includecomments = includecomments
 
         self.applicationDatabase = application_database(self.dbname)
 
@@ -158,9 +160,12 @@ class Investigator:
         permdict =  application_permissions.values()
         for listval in permdict:
             perms += '\n'.join(listval)
+        if self.includecomments:
+            return general_info["appId"],general_info["url"], general_info["title"],general_info["description"], general_info["minInstalls"], general_info["realInstalls"],general_info["reviews"],general_info["score"],general_info["ratings"],general_info["developer"],general_info["developerId"], general_info["developerEmail"],general_info["developerWebsite"], general_info["privacyPolicy"],general_info["developerAddress"],general_info["icon"],  general_info["icon"]+"=w240-h480-rw", general_info["released"], general_info["updated"], general_info["version"], '||'.join(list(general_info["comments"])) ,perms
+        else:
+            return general_info["appId"],general_info["url"], general_info["title"],general_info["description"], general_info["minInstalls"], general_info["realInstalls"],general_info["reviews"],general_info["score"],general_info["ratings"],general_info["developer"],general_info["developerId"], general_info["developerEmail"],general_info["developerWebsite"], general_info["privacyPolicy"],general_info["developerAddress"],general_info["icon"],  general_info["icon"]+"=w240-h480-rw", general_info["released"], general_info["updated"], general_info["version"], "not requested" ,perms
 
-        return general_info["appId"],general_info["url"], general_info["title"],general_info["description"], general_info["minInstalls"], general_info["realInstalls"],general_info["reviews"],general_info["score"],general_info["ratings"],general_info["developer"],general_info["developerId"], general_info["developerEmail"],general_info["developerWebsite"], general_info["privacyPolicy"],general_info["developerAddress"],general_info["icon"],  general_info["headerImage"], general_info["released"], general_info["updated"], general_info["version"], '||'.join(list(general_info["comments"])) ,perms
-        
+
 
     def filter_result(self,application):
      
